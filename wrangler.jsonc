@@ -1,0 +1,60 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "hyprchat-backend",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-03-05",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"vars": {
+		"DATABASE_URL": "postgresql://postgres:postgres@localhost:5432/postgres",
+		"CASHFREE_CLIENT_ID": "your_cashfree_client_id",
+		"CASHFREE_CLIENT_SECRET": "your_cashfree_client_secret",
+	},
+	// "kv_namespaces": [
+	//   {
+	//     "binding": "MY_KV_NAMESPACE",
+	//     "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+	//   }
+	// ],
+	// "r2_buckets": [
+	//   {
+	//     "binding": "MY_BUCKET",
+	//     "bucket_name": "my-bucket"
+	//   }
+	// ],
+	// "d1_databases": [
+	//   {
+	//     "binding": "MY_DB",
+	//     "database_name": "my-database",
+	//     "database_id": ""
+	//   }
+	// ],
+	// "ai": {
+	//   "binding": "AI"
+	// },
+	// "observability": {
+	//   "enabled": true,
+	//   "head_sampling_rate": 1
+	// }
+	"queues": {
+		"consumers": [
+			{
+				"queue": "payment-processing-queue",
+			},
+			{
+				"queue": "donation-processing-queue",
+			}
+		],
+		"producers": [
+			{
+				"queue": "payment-processing-queue",
+				"binding": "PAYMENT_PROCESSING_QUEUE"
+			},
+			{
+				"queue": "donation-processing-queue",
+				"binding": "DONATION_PROCESSING_QUEUE"
+			}
+		]
+	}
+}
