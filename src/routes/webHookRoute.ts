@@ -31,21 +31,29 @@ export const webookHandler: Handler = async (c) => {
 		message: order.order_tags.message,
 		orderId: order.order_id,
 	})
-	// forward the webhook data to donation processing queue for further processing
 
+	// forward the webhook data to donation processing queue for further processing
+try {
 	let db = c.get('db')
-	db.insert(donationsTable).values({
+   if (!db) {
+		 console.log("Database instance not found in context");
+		 return c.json({
+			 message: "Internal server error"
+		 }, 500);
+	 }
+	await db.insert(donationsTable).values({
 		amount: order.order_amount,
 		message: order.order_tags.message,
 		ordersId: order.order_id,
 		streamerName: order.order_tags.streamer_name,
 		donatorName: parsed.data.customer_details.customer_name || "Anonymous",
 		donatorPhone: parsed.data.customer_details.customer_phone,
-	})
+	}).onConflictDoNothing()
 
-	return c.json({
+} catch (err) {
+	 console.log("Error inserting donation into database: ", err);
+}
+  return c.json({
 		  message: "Webhook received successfully"
 	}, 200);
-	// insert donnation into the accounting DATABASE
-
 }

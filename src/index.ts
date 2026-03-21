@@ -3,6 +3,7 @@ import  createDB  from './lib/drizzle'
 import { drizzleMiddleware } from './middlewares/drizzleMiddleware';
 import donnateRoute from './routes/donateRoute';
 import MainQueueHandler from './queues';
+import RegistrationRoutes from './routes/RegisterationRoute';
 import { webookHandler } from './routes/webHookRoute';
 import { cors } from 'hono/cors';
 import { cashFreeMiddleware } from './middlewares/cashFreeMiddleware';
@@ -19,9 +20,8 @@ app.use('*',cors({
 
 app.use('/paymentSuccess',cashFreeMiddleware)
 app.route('/donate',donnateRoute)
+app.route('/register',RegistrationRoutes)
 app.post('/paymentSuccess',webookHandler);
-app.get('test',(c)=> c.json({message:'Hello World'}))
-
 
 export default {
   fetch: app.fetch,

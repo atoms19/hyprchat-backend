@@ -55,8 +55,10 @@ donateRoute.post('/:streamerName',async  (c) => {
         "customer_phone": parsed.data.phone,
     },
     "order_meta": {
-        "return_url": "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
-    }
+        "return_url": "http://localhost:3000/dashboard", // after payment is done user will be redirected to this url with payment details in query params
+		  "notify_url":"https://markets-betting-elephant-portion.trycloudflare.com/paymentSuccess" 
+    },
+	 
   })
 
     return c.json({
